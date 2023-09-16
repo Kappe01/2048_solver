@@ -5,6 +5,7 @@
 
 ### Viikkoraportit
 [Viikko 1](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_1.md)
+
 [Viikko 2](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_2.md)
 
 ## Asennus
