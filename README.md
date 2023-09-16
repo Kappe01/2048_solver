@@ -15,16 +15,6 @@
 poetry install
 ```
 
-2. Suorita vaadittavat alustustoimenpiteet:
-```bash
-poetry run invoke build
-```
-
-3. Käynnistä sovellus:
-```bash
-poetry run invoke start
-```
-
 ## Komentorivitoiminnot
 
 ### Ohjelman suorittaminen
@@ -50,6 +40,7 @@ Testikattavuusraportin voi generoida komennolla:
 ```bash
 poetry run invoke coverage-report
 ```
+![Testikattavuus](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/Coverage_viikko2.png)
 
 Raportti generoituu _htmlcov_-hakemistoon.
 
