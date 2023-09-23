@@ -2,6 +2,7 @@
 
 ## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/maarittelydokumentti.md)
+
 [Testausdokumentti](https://github.com/Kappe01/blob/main/Dokumentaatio/testaus_dokumentti.md)
 
 ### Viikkoraportit
