@@ -2,6 +2,7 @@
 
 ## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/maarittelydokumentti.md)
+[Testausdokumentti](https://github.com/Kappe01/blob/main/Dokumentaatio/testaus_dokumentti.md)
 
 ### Viikkoraportit
 [Viikko 1](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_1.md)
@@ -42,7 +43,7 @@ Testikattavuusraportin voi generoida komennolla:
 ```bash
 poetry run invoke coverage-report
 ```
-![Testikattavuus](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/Coverage_viikko2.png)
+![Testikattavuus](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/testikattavuus_3.png)
 
 Raportti generoituu _htmlcov_-hakemistoon.
 
