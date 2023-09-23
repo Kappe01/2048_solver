@@ -5,10 +5,7 @@ class Logic:
     '''2048-pelin logiikka.'''
 
     def __init__(self):
-        self.peli_lauta = [[0]*4 for i in range(4)]  # Luo tyhjän laudan
-
-        self.lisaa_arvo()
-        self.lisaa_arvo()  # Lisätään kaksi arvoa lautaan
+        self.nollaa()
 
     def lisaa_arvo(self):
         '''Lisää lautaan kakkosen 90% todennäköisyydellä ja 10% todennäköisyydellä nelosen.'''
@@ -26,13 +23,14 @@ class Logic:
         else:
             self.peli_lauta[rivi][sarake] = 2
 
-    def get_current_state(self):
+    def get_current_state(self, jatko = False):
         'Tarkistaa olemmeko voittaneet/hävinneet vai jatkuuko peli vielä.'
 
-        for i in range(4):  # Jos jostain löytyy 2048 olemme voittaneet
-            for j in range(4):
-                if self.peli_lauta[i][j] == 2048:
-                    return 'Sinä voitit!'
+        if not jatko: # Tarkistaa jatkuuko peli vai ei jos 2048 on saavutettu
+            for i in range(4):  # Jos jostain löytyy 2048 olemme voittaneet
+                for j in range(4):
+                    if self.peli_lauta[i][j] == 2048:
+                        return 'Sinä voitit!'
 
         for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
             for j in range(4):
@@ -152,3 +150,13 @@ class Logic:
     def lauta(self):
         'Palauttaa laudan'
         return self.peli_lauta
+    
+    def nollaa(self):
+        'Nollaa laudan ja lisää kaksi arvoa'
+        self.peli_lauta = [[0]*4 for i in range(4)]
+
+        self.lisaa_arvo()
+        self.lisaa_arvo()
+
+
+logiikka = Logic()
