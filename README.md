@@ -8,6 +8,8 @@
 
 [Viikko 2](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_2.md)
 
+[Viikko 3](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_3.md)
+
 ## Asennus
 
 1. Asenna riippuvuudet komennolla:
