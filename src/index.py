@@ -1,4 +1,4 @@
-from game.game_ui import start
+from game.game_ui import aloita
 
 def start():
     aloita()

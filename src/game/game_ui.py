@@ -1,6 +1,9 @@
 import pygame
 from math import log2
 from game.game_logic import logiikka
+from solver.game_solver import ratkoja
+import threading
+import time
 
 
 class UI:
@@ -75,7 +78,9 @@ class UI:
                     self.uusi_peli()
                 if tapahtuma.key == pygame.K_RETURN:
                     self.AI = True
-                    pass # Aloita AI
+                    #t1 = threading.Thread(target=self.ai)
+                    #t1.start()
+                    self.ai()
                 if tapahtuma.key == pygame.K_ESCAPE:
                     exit()
 
@@ -94,11 +99,43 @@ class UI:
                 self.naytto.blit(self.arvot[int(log2(numero)) if numero != 0 else 0], (x * self.skaala, y * self.skaala))
 
         if logiikka.get_current_state(self.jatka) == 'Sinä voitit!':
-            pass
+            self.AI = False
+            print('gg')
+
         if logiikka.get_current_state() == 'Hävisit pelin!':
-            pass
+            self.AI = False
+            print('bg')
 
         pygame.display.flip() 
+
+    def ai(self):
+        while self.AI:
+            ratkoja.aloita_alusta()
+            ratkoja.tee_nodet()
+            siirto = ratkoja.seuraava_siirto()
+
+            muuttunut = False
+
+            if siirto == 'vasen':
+                muuttunut = logiikka.vasen()
+            elif siirto == 'oikea':
+                muuttunut = logiikka.oikea()
+            elif siirto == 'alas':
+                muuttunut = logiikka.alas()
+            elif siirto == 'ylos':
+                muuttunut = logiikka.ylos()
+            
+            if muuttunut:
+                logiikka.lisaa_arvo()
+
+            self.tapahtumat()
+            self.paivita()
+
+            time.sleep(0.1)
+
+
+
+
 
 aloita = UI()
 
