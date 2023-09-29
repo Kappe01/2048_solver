@@ -5,12 +5,16 @@
 
 [Testausdokumentti](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/testaus_dokementti.md)
 
+[Toteutusdokumennti](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/toteutusraportti.md)
+
 ### Viikkoraportit
 [Viikko 1](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_1.md)
 
 [Viikko 2](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_2.md)
 
 [Viikko 3](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_3.md)
+
+[Viikko 4](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_4.md)
 
 ## Asennus
 
