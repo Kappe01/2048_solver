@@ -2,7 +2,6 @@ import pygame
 from math import log2
 from game.game_logic import logiikka
 from solver.game_solver import ratkoja
-import threading
 import time
 
 
@@ -20,7 +19,7 @@ class UI:
         self.leveys = len(self.peli[0])
         self.skaala = self.arvot[0].get_width()
 
-        self.naytto = pygame.display.set_mode((self.korkeus * self.skaala, (self.leveys*self.skaala) + self.skaala))
+        self.naytto = pygame.display.set_mode((self.korkeus * self.skaala, (self.leveys*self.skaala) + self.skaala-50))
 
         self.fontti = pygame.font.SysFont('Arial', 24)
 
@@ -78,8 +77,6 @@ class UI:
                     self.uusi_peli()
                 if tapahtuma.key == pygame.K_RETURN:
                     self.AI = True
-                    #t1 = threading.Thread(target=self.ai)
-                    #t1.start()
                     self.ai()
                 if tapahtuma.key == pygame.K_ESCAPE:
                     exit()
@@ -92,6 +89,10 @@ class UI:
     def paivita(self):
         'Päivittää näytöm'
         self.naytto.fill((176,224,230)) 
+        teksti = self.fontti.render('F2 = Uusi peli     Enter = Käynnistä AI',True, (0,0,0))
+        self.naytto.blit(teksti, (25, self.korkeus*self.skaala+10))
+        teksti = self.fontti.render('ESC = Lopeta',True,(0,0,0))
+        self.naytto.blit(teksti, (25, self.korkeus*self.skaala+40))
 
         for y in range(self.korkeus):
             for x in range(self.leveys):
@@ -100,12 +101,19 @@ class UI:
 
         if logiikka.get_current_state(self.jatka) == 'Sinä voitit!':
             self.AI = False
-            print('gg')
+            teksti = self.fontti.render('Sinä voitit!',True,(0,0,0))
+            teksti_x = self.skaala * self.leveys / 2 - teksti.get_width() / 2
+            teksti_y = self.skaala * self.korkeus / 2 - teksti.get_height() / 2
+            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x, teksti_y, teksti.get_width(), teksti.get_height()))
+            self.naytto.blit(teksti, (teksti_x, teksti_y))
 
         if logiikka.get_current_state() == 'Hävisit pelin!':
             self.AI = False
-            print('bg')
-
+            teksti = self.fontti.render('Hävisit pelin!',True,(0,0,0))
+            teksti_x = self.skaala * self.leveys / 2 - teksti.get_width() / 2
+            teksti_y = self.skaala * self.korkeus / 2 - teksti.get_height() / 2
+            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x, teksti_y, teksti.get_width(), teksti.get_height()))
+            self.naytto.blit(teksti, (teksti_x, teksti_y))
         pygame.display.flip() 
 
     def ai(self):

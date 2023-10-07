@@ -5,17 +5,20 @@ import solver.expectimax as Exp
 
 class TestExpectimax(unittest.TestCase):
     def test_uusi_node(self):
-        test = Exp.uusi_node(10, None)
-        self.assertEqual(test.arvo, 10)
+        test = Exp.Node(0,None)
+        self.assertEqual(test.arvo, 0)
 
     def test_expectimax(self):
-        juuri = Exp.uusi_node(10,None)
-        juuri.alas = Exp.uusi_node(20,juuri)
-        juuri.ylos = Exp.uusi_node(30,juuri)
-        juuri.alas.alas = Exp.uusi_node(100,juuri.alas)
-        juuri.ylos.oikea = Exp.uusi_node(200,juuri.ylos)
-        juuri.vasen = Exp.uusi_node(500,juuri)
+        juuri = Exp.Node(0,None)
+        juuri.lisaa_lapsi('vasen', Exp.Node(10,juuri))
+        juuri.lisaa_lapsi('ylos',Exp.Node(20, juuri))
+        lapset_vasen = juuri.hae_lapsi('vasen')
+        lapset_ylos = juuri.hae_lapsi('ylos')
+        for lapsi in lapset_vasen:
+            lapsi.lisaa_lapsi('alas', Exp.Node(100, lapsi))
+        for lapsi in lapset_ylos:
+            lapsi.lisaa_lapsi('oikea', Exp.Node(200,lapsi))
 
         siirto = Exp.expectimax(juuri, True)
 
-        self.assertEqual(siirto, ['vasen',[]])
+        self.assertEqual(siirto, (200, ['ylos', 'oikea']))
