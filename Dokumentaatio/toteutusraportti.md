@@ -15,7 +15,7 @@ Hakupuun nodet luodaan ajassa O(n^s) missä n on eri siirtojen lukumäärä (4) 
 
 ### Työn puutteet ja parannukset
 
-Tällähetkellä (viikko 4 loppupuoli) ratkoja ei vielä pysty ratkaisemaan peliä. Parannuksena minun pitää parantaa heurestiikkaa sillä siirron haku algoritmi näyttää ainakin toimivan oikein.
+Tällähetkellä (viikko 6 loppupuoli) ratkoja ei vielä pysty ratkaisemaan peliä. Parannuksena minun pitää parantaa heurestiikkaa sillä siirron haku algoritmi näyttää ainakin toimivan oikein.
 
 ### Tekoälyn käyttö.
 Tekoälyä on käytetty hieman bugien korjaamiseen mutta ei sen enempää.
