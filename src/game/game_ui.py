@@ -1,7 +1,7 @@
 import pygame
 from math import log2
 from game.game_logic import logiikka
-from solver.game_solver import ratkoja
+from solver.game_ai import ratkoja
 import time
 
 
@@ -118,9 +118,11 @@ class UI:
 
     def ai(self):
         while self.AI:
-            ratkoja.aloita_alusta()
-            ratkoja.tee_nodet()
             siirto = ratkoja.seuraava_siirto()
+            for y in range(len(self.peli)):
+                for x in range(len(self.peli[0])):
+                    if self.peli[y][x] >= 256:
+                        ratkoja.aseta_syvyys(3)
 
             muuttunut = False
 
