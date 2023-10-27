@@ -7,7 +7,7 @@
 
 [Toteutusdokumennti](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/toteutusraportti.md)
 
-[Käyttöohje]()
+[Käyttöohje](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/kayttoohje.md)
 ### Viikkoraportit
 [Viikko 1](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_1.md)
 
@@ -17,9 +17,9 @@
 
 [Viikko 4](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_4.md)
 
-[Viikko 5]()
+[Viikko 5](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_5.md)
 
-[Viikko 6]()
+[Viikko 6](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/viikkoraportti_6.md)
 ## Asennus
 
 1. Asenna riippuvuudet komennolla:
