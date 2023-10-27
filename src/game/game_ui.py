@@ -19,7 +19,8 @@ class UI:
         self.leveys = len(self.peli[0])
         self.skaala = self.arvot[0].get_width()
 
-        self.naytto = pygame.display.set_mode((self.korkeus * self.skaala, (self.leveys*self.skaala) + self.skaala-50))
+        self.naytto = pygame.display.set_mode(
+            (self.korkeus * self.skaala, (self.leveys*self.skaala) + self.skaala-50))
 
         self.fontti = pygame.font.SysFont('Arial', 24)
 
@@ -34,9 +35,9 @@ class UI:
         'Lataa peli arvojen kuvat'
         self.arvot = []
 
-        for arvo in ['0','2','4','8','16','32','64','128','256','512','1024','2048']:
-            self.arvot.append(pygame.image.load(f'./Dokumentaatio/Kuvat/{arvo}.png'))
-
+        for arvo in ['0', '2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048']:
+            self.arvot.append(pygame.image.load(
+                f'./Dokumentaatio/Kuvat/{arvo}.png'))
 
     def uusi_peli(self):
         'Aloittaa uuden pelin.'
@@ -52,9 +53,9 @@ class UI:
     def tapahtumat(self):
         'Käy läpi tapahtumat ja tekee tarvittavat toimenpiteet'
         for tapahtuma in pygame.event.get():
-            
+
             if tapahtuma.type == pygame.KEYDOWN:
-                if not self.AI: # Jos ohjelmaa suoritetaan AIn kanssa ei voi siirtää itse ruutua
+                if not self.AI:  # Jos ohjelmaa suoritetaan AIn kanssa ei voi siirtää itse ruutua
                     if tapahtuma.key == pygame.K_LEFT:
                         muuttunut = logiikka.vasen()
                         if muuttunut:
@@ -76,7 +77,10 @@ class UI:
                     self.AI = False
                     self.uusi_peli()
                 if tapahtuma.key == pygame.K_RETURN:
-                    self.AI = True
+                    if self.AI == True:
+                        self.AI = False
+                    else:
+                        self.AI = True
                     self.ai()
                 if tapahtuma.key == pygame.K_ESCAPE:
                     exit()
@@ -87,42 +91,45 @@ class UI:
         self.peli = logiikka.lauta()
 
     def paivita(self):
-        'Päivittää näytöm'
-        self.naytto.fill((176,224,230)) 
-        teksti = self.fontti.render('F2 = Uusi peli     Enter = Käynnistä AI',True, (0,0,0))
+        'Päivittää näytön'
+        self.naytto.fill((176, 224, 230))
+        # Laittaa ohjeet näytön alareunaan
+        teksti = self.fontti.render(
+            'F2 = Uusi peli     Enter = Käynnistä AI', True, (0, 0, 0))
         self.naytto.blit(teksti, (25, self.korkeus*self.skaala+10))
-        teksti = self.fontti.render('ESC = Lopeta',True,(0,0,0))
+        teksti = self.fontti.render('ESC = Lopeta', True, (0, 0, 0))
         self.naytto.blit(teksti, (25, self.korkeus*self.skaala+40))
-
+        # Piirtää itse pelikentän
         for y in range(self.korkeus):
             for x in range(self.leveys):
                 numero = self.peli[y][x]
-                self.naytto.blit(self.arvot[int(log2(numero)) if numero != 0 else 0], (x * self.skaala, y * self.skaala))
+                self.naytto.blit(self.arvot[int(
+                    log2(numero)) if numero != 0 else 0], (x * self.skaala, y * self.skaala))
 
         if logiikka.get_current_state(self.jatka) == 'Sinä voitit!':
             self.AI = False
-            teksti = self.fontti.render('Sinä voitit!',True,(0,0,0))
+            teksti = self.fontti.render('Sinä voitit!', True, (0, 0, 0))
             teksti_x = self.skaala * self.leveys / 2 - teksti.get_width() / 2
             teksti_y = self.skaala * self.korkeus / 2 - teksti.get_height() / 2
-            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x, teksti_y, teksti.get_width(), teksti.get_height()))
+            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x,
+                             teksti_y, teksti.get_width(), teksti.get_height()))
             self.naytto.blit(teksti, (teksti_x, teksti_y))
 
         if logiikka.get_current_state() == 'Hävisit pelin!':
             self.AI = False
-            teksti = self.fontti.render('Hävisit pelin!',True,(0,0,0))
+            teksti = self.fontti.render('Hävisit pelin!', True, (0, 0, 0))
             teksti_x = self.skaala * self.leveys / 2 - teksti.get_width() / 2
             teksti_y = self.skaala * self.korkeus / 2 - teksti.get_height() / 2
-            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x, teksti_y, teksti.get_width(), teksti.get_height()))
+            pygame.draw.rect(self.naytto, (255, 255, 255), (teksti_x,
+                             teksti_y, teksti.get_width(), teksti.get_height()))
             self.naytto.blit(teksti, (teksti_x, teksti_y))
-        pygame.display.flip() 
+        pygame.display.flip()
 
     def ai(self):
+        'Pyröittää tekoälyä'
         while self.AI:
-            siirto = ratkoja.seuraava_siirto()
-            for y in range(len(self.peli)):
-                for x in range(len(self.peli[0])):
-                    if self.peli[y][x] >= 256:
-                        ratkoja.aseta_syvyys(3)
+            siirto = ratkoja.seuraava_siirto()  # hakee seuraavan siirron
+            tyhjat = 0
 
             muuttunut = False
 
@@ -134,9 +141,21 @@ class UI:
                 muuttunut = logiikka.alas()
             elif siirto == 'ylos':
                 muuttunut = logiikka.ylos()
-            
+
             if muuttunut:
                 logiikka.lisaa_arvo()
+
+            # Päivittää syvyttää kun pelikenttä täyttyy
+            for i in self.peli:
+                for j in i:
+                    if j == 0:
+                        tyhjat += 1
+            if tyhjat < 2:
+                ratkoja.aseta_syvyys(4)
+            elif tyhjat < 4:
+                ratkoja.aseta_syvyys(3)
+            else:
+                ratkoja.aseta_syvyys(2)
 
             self.tapahtumat()
             self.paivita()
@@ -144,8 +163,4 @@ class UI:
             time.sleep(0.1)
 
 
-
-
-
 aloita = UI()
-
