@@ -1,5 +1,5 @@
 ## Viikko 1
 
-Alustin projektin ja kirjotin määrittely dokumentin. Etsin tietoa algortimeistä jota voisin käyttää. Sekä yleisesti miten toteuttaa projekti. 
+Dokumentaation päivitys ja koodin uudelleen lukua ja muistelemista
 
-Aikaa käytetty: 6h
+Aikaa käytetty: 4h
