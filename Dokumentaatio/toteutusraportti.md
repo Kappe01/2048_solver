@@ -12,11 +12,6 @@ Ratkoja luo itse puun jokaisesta mahdollisesta siirrosta (vasemmalle, oikealle, 
 
 Hakupuun nodet luodaan ajassa O(n^s) missä n on eri siirtojen lukumäärä (4) ja s on syvyys eli hakupuun lopputulos = O(4^s). Expectimxin pitäisi toimia samalla nopeudella. Tilavaativuudeltaan Hakupuun tekeminen on O(4 * s) missä s on syvyys ja sama on myös expectimaxissa.
 
-
-### Työn puutteet ja parannukset
-
-Tällähetkellä (viikko 6 loppupuoli) ratkoja ei vielä pysty ratkaisemaan peliä. Parannuksena minun pitää parantaa heurestiikkaa sillä siirron haku algoritmi näyttää ainakin toimivan oikein.
-
 ### Tekoälyn käyttö.
 Tekoälyä on käytetty hieman bugien korjaamiseen mutta ei sen enempää.
 
