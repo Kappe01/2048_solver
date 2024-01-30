@@ -25,82 +25,36 @@ class Logic:
 
     def hae_nykyinen_tila(self, jatko=False, lauta=None):
         "Tarkistaa olemmeko voittaneet/hävinneet vai jatkuuko peli vielä."
+        peli = self.peli_lauta
+
         if lauta:
-            if not jatko:  # Tarkistaa jatkuuko peli vai ei jos 2048 on saavutettu
-                for i in range(4):  # Jos jostain löytyy 2048 olemme voittaneet
-                    for j in range(4):
-                        if lauta[i][j] == 2048:
-                            return "Sinä voitit!"
-
-                for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
-                    for j in range(4):
-                        if lauta[i][j] == 0:
-                            return "ei"
-
-                # Jos kaikki kohdat ovat täynnä mutta pystymme yhdistämään arvoja peli ei ole vielä ohi
-                for i in range(3):
-                    for j in range(3):
-                        if (
-                            lauta[i][j] == lauta[i + 1][j]
-                            or lauta[i][j] == lauta[i][j + 1]
-                        ):
-                            return "ei"
-
-                for j in range(3):
-                    if lauta[3][j] == lauta[3][j + 1] or lauta[j][3] == lauta[j + 1][3]:
-                        return "ei"
-
-                return "Hävisit pelin!"
+            peli = lauta
 
         if not jatko:  # Tarkistaa jatkuuko peli vai ei jos 2048 on saavutettu
             for i in range(4):  # Jos jostain löytyy 2048 olemme voittaneet
                 for j in range(4):
-                    if self.peli_lauta[i][j] == 2048:
+                    if peli[i][j] == 2048:
                         return "Sinä voitit!"
 
-        for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
-            for j in range(4):
-                if self.peli_lauta[i][j] == 0:
-                    return "ei"
-
-        # Jos kaikki kohdat ovat täynnä mutta pystymme yhdistämään arvoja peli ei ole vielä ohi
-        for i in range(3):
-            for j in range(3):
-                if (
-                    self.peli_lauta[i][j] == self.peli_lauta[i + 1][j]
-                    or self.peli_lauta[i][j] == self.peli_lauta[i][j + 1]
-                ):
-                    return "ei"
-
-        for j in range(3):
-            if (
-                self.peli_lauta[3][j] == self.peli_lauta[3][j + 1]
-                or self.peli_lauta[j][3] == self.peli_lauta[j + 1][3]
-            ):
-                return "ei"
-
-        return "Hävisit pelin!"
-
-    def tiivista(self, lauta=[]):
-        """Siirtää kaiken vasempaan reunaan"""
-
-        if len(lauta) > 1:
-            muuttunut = False
-
-            uusi_lauta = [[0] * 4 for i in range(4)]
-
-            for i in range(4):
-                paikka = 0
+            for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
                 for j in range(4):
-                    if lauta[i][j] != 0:
-                        uusi_lauta[i][paikka] = lauta[i][j]
+                    if peli[i][j] == 0:
+                        return "ei"
 
-                        if j != paikka:
-                            muuttunut = True
-                        paikka += 1
-            lauta = uusi_lauta
+            # Jos kaikki kohdat ovat täynnä mutta pystymme yhdistämään arvoja peli ei ole vielä ohi
+            for i in range(3):
+                for j in range(3):
+                    if peli[i][j] == peli[i + 1][j] or peli[i][j] == peli[i][j + 1]:
+                        return "ei"
 
-            return muuttunut, lauta
+            for j in range(3):
+                if peli[3][j] == peli[3][j + 1] or peli[j][3] == peli[j + 1][3]:
+                    return "ei"
+
+            return "Hävisit pelin!"
+
+    def tiivista(self, lauta):
+        """Siirtää kaiken vasempaan reunaan"""
 
         muuttunut = False
 
@@ -109,155 +63,119 @@ class Logic:
         for i in range(4):
             paikka = 0
             for j in range(4):
-                if self.peli_lauta[i][j] != 0:
-                    uusi_lauta[i][paikka] = self.peli_lauta[i][j]
+                if lauta[i][j] != 0:
+                    uusi_lauta[i][paikka] = lauta[i][j]
 
                     if j != paikka:
                         muuttunut = True
                     paikka += 1
-        self.peli_lauta = uusi_lauta
+        lauta = uusi_lauta
 
-        return muuttunut
+        return muuttunut, lauta
 
-    def yhdista(self, lauta=[]):
+    def yhdista(self, lauta):
         """Jos vierekkäisillä ruuduilla on sama arvo yhdistää se ne yhdeksi"""
-
-        if len(lauta) > 1:
-            muuttunut = False
-
-            for i in range(4):
-                for j in range(3):
-                    if lauta[i][j] == lauta[i][j + 1] and lauta[i][j] != 0:
-                        lauta[i][j] = lauta[i][j] * 2
-                        lauta[i][j + 1] = 0
-
-                        muuttunut = True
-
-            return muuttunut, lauta
-
         muuttunut = False
 
         for i in range(4):
             for j in range(3):
-                if (
-                    self.peli_lauta[i][j] == self.peli_lauta[i][j + 1]
-                    and self.peli_lauta[i][j] != 0
-                ):
-                    self.peli_lauta[i][j] = self.peli_lauta[i][j] * 2
-                    self.peli_lauta[i][j + 1] = 0
+                if lauta[i][j] == lauta[i][j + 1] and lauta[i][j] != 0:
+                    lauta[i][j] = lauta[i][j] * 2
+                    lauta[i][j + 1] = 0
 
                     muuttunut = True
 
-        return muuttunut
+        return muuttunut, lauta
 
-    def kaanna(self, lauta=[]):
+    def kaanna(self, lauta):
         "Kääntää laudan ylösalaisin vaakatasossa"
         uusi_lauta = [[] for i in range(4)]
-        if len(lauta) > 1:
-            for i in range(4):
-                for j in range(4):
-                    uusi_lauta[i].append(lauta[i][3 - j])
-            return uusi_lauta
 
         for i in range(4):
             for j in range(4):
-                uusi_lauta[i].append(self.peli_lauta[i][3 - j])
-        self.peli_lauta = uusi_lauta
+                uusi_lauta[i].append(lauta[i][3 - j])
+        return uusi_lauta
 
-    def vaihda(self, lauta=[]):
+    def vaihda(self, lauta):
         "Vaihtaa rivien ja sarakkeitten paikkaa"
         uus_lauta = [[] for i in range(4)]
-        if len(lauta) > 1:
-            for i in range(4):
-                for j in range(4):
-                    uus_lauta[i].append(lauta[j][i])
-            return uus_lauta
 
         for i in range(4):
             for j in range(4):
-                uus_lauta[i].append(self.peli_lauta[j][i])
-        self.peli_lauta = uus_lauta
+                uus_lauta[i].append(lauta[j][i])
+        return uus_lauta
 
     def ylos(self, lauta=[]):
         "Siirtää kaiken ylös"
+        peli = self.peli_lauta
         if len(lauta) > 1:
-            lauta = self.vaihda(lauta)
+            peli = lauta
 
-            muuttunut, lauta = self.vasen(lauta)
+        peli = self.vaihda(peli)
 
-            lauta = self.vaihda(lauta)
+        muuttunut, peli = self.vasen(peli)
 
-            return muuttunut, lauta
+        peli = self.vaihda(peli)
 
-        self.vaihda()
+        if not lauta:
+            self.peli_lauta = peli
 
-        muuttunut = self.vasen()
-
-        self.vaihda()
-
-        return muuttunut
+        return muuttunut, peli
 
     def alas(self, lauta=[]):
         "Siirtää kaiken alas"
+        peli = self.peli_lauta
+
         if len(lauta) > 1:  # Tekoälyn lauta
-            lauta = self.vaihda(lauta)
+            peli = lauta
 
-            muuttunut, lauta = self.oikea(lauta)
+        peli = self.vaihda(peli)
 
-            lauta = self.vaihda(lauta)
+        muuttunut, peli = self.oikea(peli)
 
-            return muuttunut, lauta
+        peli = self.vaihda(peli)
 
-        # Oikea pelilauta
-        self.vaihda()
+        if not lauta:
+            self.peli_lauta = peli
 
-        muuttunut = self.oikea()
-
-        self.vaihda()
-
-        return muuttunut
+        return muuttunut, peli
 
     def vasen(self, lauta=[]):
         "Siirtää kaiken vasemmalle"
+        peli = self.peli_lauta
+
         if len(lauta) > 1:
-            muuttunut1, lauta = self.tiivista(lauta)
+            peli = lauta
 
-            muuttunut2, lauta = self.yhdista(lauta)
+        muuttunut1, peli = self.tiivista(peli)
 
-            muuttunut = muuttunut1 or muuttunut2
-
-            temp, lauta = self.tiivista(lauta)
-
-            return muuttunut, lauta
-
-        muuttunut1 = self.tiivista()
-
-        muuttunut2 = self.yhdista()
+        muuttunut2, peli = self.yhdista(peli)
 
         muuttunut = muuttunut1 or muuttunut2
 
-        self.tiivista()
+        temp, peli = self.tiivista(peli)
 
-        return muuttunut
+        if not lauta:
+            self.peli_lauta = peli
+
+        return muuttunut, peli
 
     def oikea(self, lauta=[]):
         "Siirtää kaiken oikealla"
-        if len(lauta):
-            lauta = self.kaanna(lauta)
+        peli = self.peli_lauta
+        if len(lauta) > 1:
+            peli = lauta
 
-            muuttunut, lauta = self.vasen(lauta)
+        peli = self.kaanna(peli)
 
-            lauta = self.kaanna(lauta)
+        muuttunut, peli = self.vasen(peli)
 
-            return muuttunut, lauta
+        peli = self.kaanna(peli)
 
-        self.kaanna()
+        if not lauta:
+            self.peli_lauta = peli
 
-        muuttunut = self.vasen()
-
-        self.kaanna()
-
-        return muuttunut
+        return muuttunut, peli
 
     def lauta(self):
         "Palauttaa laudan"

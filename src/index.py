@@ -1,8 +1,8 @@
-from game.game_ui import aloita
+from game.game_ui import UI
 
 
 def start():
-    aloita()
+    UI()
 
 
 if __name__ == "__main__":

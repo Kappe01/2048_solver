@@ -28,10 +28,22 @@ class TestLogic(unittest.TestCase):
 
         self.assertEqual(arvot, 3)
 
+    def test_hae_nykyinen_tila_voitto(self):
+        lauta = [[0, 0, 0, 0], [2048, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        tulos = Logic.hae_nykyinen_tila(self.start, lauta=lauta)
+
+        self.assertEqual(tulos, "Sinä voitit!")
+
+    def test_hae_nykyinen_tila_havio(self):
+        lauta = [[2, 4, 2, 4], [4, 2, 4, 2], [2, 4, 2, 4], [4, 2, 4, 2]]
+        tulos = Logic.hae_nykyinen_tila(self.start, lauta=lauta)
+
+        self.assertEqual(tulos, "Hävisit pelin!")
+
     def test_tiivistys(self):
         arvot = 0
-        Logic.tiivista(self.start)
-        lauta = Logic.lauta(self.start)
+        muuttunut, lauta = Logic.tiivista(self.start, self.start.peli_lauta)
+
         for i in range(len(lauta)):
             for j in range(1):
                 if lauta[i][j] == 2 or lauta[i][j] == 4:
@@ -49,11 +61,11 @@ class TestLogic(unittest.TestCase):
         Logic.lisaa_arvo(self.start)
         # Lisätään 8 arvoa niin jollain rivillä on vähintään 2 arvoa
         Logic.lisaa_arvo(self.start)
-        Logic.tiivista(self.start)
+        Logic.tiivista(self.start, self.start.peli_lauta)
         # Jos palauttaa true on jotkut arvot yhdistynyt
-        lauta = Logic.yhdista(self.start)
+        muuttunut, lauta = Logic.yhdista(self.start, self.start.peli_lauta)
 
-        self.assertTrue(lauta == True)
+        self.assertTrue(muuttunut == True)
 
     def test_ylos(self):
         Logic.lisaa_arvo(self.start)
@@ -64,10 +76,10 @@ class TestLogic(unittest.TestCase):
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
-        Logic.tiivista(self.start)
-        lauta = Logic.ylos(self.start)
+        Logic.tiivista(self.start, self.start.peli_lauta)
+        muuttunut, lauta = Logic.ylos(self.start)
 
-        self.assertTrue(lauta == True)
+        self.assertTrue(muuttunut == True)
 
     def test_alas(self):
         Logic.lisaa_arvo(self.start)
@@ -78,10 +90,10 @@ class TestLogic(unittest.TestCase):
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
-        Logic.tiivista(self.start)
-        lauta = Logic.alas(self.start)
+        Logic.tiivista(self.start, self.start.peli_lauta)
+        muuttunut, lauta = Logic.alas(self.start)
 
-        self.assertTrue(lauta == True)
+        self.assertTrue(muuttunut == True)
 
     def test_oikea(self):
         Logic.lisaa_arvo(self.start)
@@ -92,10 +104,10 @@ class TestLogic(unittest.TestCase):
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
-        Logic.tiivista(self.start)
-        lauta = Logic.oikea(self.start)
+        Logic.tiivista(self.start, self.start.peli_lauta)
+        muuttunut, lauta = Logic.oikea(self.start)
 
-        self.assertTrue(lauta == True)
+        self.assertTrue(muuttunut == True)
 
     def test_vasen(self):
         Logic.lisaa_arvo(self.start)
@@ -106,7 +118,7 @@ class TestLogic(unittest.TestCase):
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
         Logic.lisaa_arvo(self.start)
-        Logic.tiivista(self.start)
-        lauta = Logic.vasen(self.start)
+        Logic.tiivista(self.start, self.start.peli_lauta)
+        muuttunut, lauta = Logic.vasen(self.start)
 
-        self.assertTrue(lauta == True)
+        self.assertTrue(muuttunut == True)

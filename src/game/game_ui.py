@@ -56,6 +56,7 @@ class UI:
         "Aloittaa uuden pelin."
         logiikka.nollaa()
         self.peli = logiikka.lauta()
+        self.tulos = 0
 
     def silmukka(self):
         "Pitää pelin käynnissä"
@@ -71,19 +72,19 @@ class UI:
                     not self.AI
                 ):  # Jos ohjelmaa suoritetaan AIn kanssa ei voi siirtää itse ruutua
                     if tapahtuma.key == pygame.K_LEFT:
-                        muuttunut = logiikka.vasen()
+                        muuttunut, peli = logiikka.vasen()
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_RIGHT:
-                        muuttunut = logiikka.oikea()
+                        muuttunut, peli = logiikka.oikea()
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_UP:
-                        muuttunut = logiikka.ylos()
+                        muuttunut, peli = logiikka.ylos()
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_DOWN:
-                        muuttunut = logiikka.alas()
+                        muuttunut, peli = logiikka.alas()
                         if muuttunut:
                             logiikka.lisaa_arvo()
 
@@ -104,23 +105,48 @@ class UI:
 
         self.peli = logiikka.lauta()
 
+    def laske_pelin_tulos(self):
+        """Laskee pelin tuloksen"""
+        self.tulos = 0
+        for i in range(4):
+            for j in range(4):
+                self.tulos += self.peli[i][j]
+
     def paivita(self):
         "Päivittää näytön"
+        self.laske_pelin_tulos()
+
         self.naytto.fill((176, 224, 230))
         # Laittaa ohjeet näytön alareunaan
+
+        tulos = self.fontti.render(f"Pisteet: {self.tulos}", True, (0, 0, 0))
+
+        pygame.draw.rect(
+            self.naytto,
+            (255, 255, 255),
+            (0, 0, tulos.get_width(), tulos.get_height()),
+        )
+
+        self.naytto.blit(tulos, (0, 0))
+
         teksti = self.fontti.render(
             "F2 = Uusi peli     Enter = Käynnistä AI", True, (0, 0, 0)
         )
-        self.naytto.blit(teksti, (25, self.korkeus * self.skaala + 10))
+        self.naytto.blit(
+            teksti, (25, self.korkeus * self.skaala + 10 + tulos.get_height())
+        )
         teksti = self.fontti.render("ESC = Lopeta", True, (0, 0, 0))
-        self.naytto.blit(teksti, (25, self.korkeus * self.skaala + 40))
+        self.naytto.blit(
+            teksti, (25, self.korkeus * self.skaala + 40 + tulos.get_height())
+        )
+
         # Piirtää itse pelikentän
         for y in range(self.korkeus):
             for x in range(self.leveys):
                 numero = self.peli[y][x]
                 self.naytto.blit(
                     self.arvot[int(log2(numero)) if numero != 0 else 0],
-                    (x * self.skaala, y * self.skaala),
+                    (x * self.skaala, y * self.skaala + teksti.get_height()),
                 )
 
         if logiikka.hae_nykyinen_tila(self.jatka) == "Sinä voitit!":
@@ -152,18 +178,17 @@ class UI:
         "Pyröittää tekoälyä"
         while self.AI:
             siirto = hae_siirto(Node(self.peli))  # hakee seuraavan siirron
-            print(siirto)
 
             muuttunut = False
 
             if siirto == "vasen":
-                muuttunut = logiikka.vasen()
+                muuttunut, peli = logiikka.vasen()
             elif siirto == "oikea":
-                muuttunut = logiikka.oikea()
+                muuttunut, peli = logiikka.oikea()
             elif siirto == "alas":
-                muuttunut = logiikka.alas()
+                muuttunut, peli = logiikka.alas()
             elif siirto == "ylos":
-                muuttunut = logiikka.ylos()
+                muuttunut, peli = logiikka.ylos()
 
             if muuttunut:
                 logiikka.lisaa_arvo()
@@ -172,6 +197,3 @@ class UI:
             self.paivita()
 
             time.sleep(0.1)
-
-
-aloita = UI()

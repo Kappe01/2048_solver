@@ -52,7 +52,7 @@ Testikattavuusraportin voi generoida komennolla:
 ```bash
 poetry run invoke coverage-report
 ```
-![Testikattavuus](https://github.com/Kappe01/2048_solver/blob/main/Dokumentaatio/Kuvat/Coverage_final.png)
+![Testikattavuus](./Dokumentaatio/Kuvat/coverage_viikko3.png)
 
 Raportti generoituu _htmlcov_-hakemistoon.
 
