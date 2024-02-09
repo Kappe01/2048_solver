@@ -1,3 +1,6 @@
+from game.game_logic import logiikka
+
+
 class Ratkoja:
     "Tähän tulee itse pelin ratkaisija."
 
@@ -5,78 +8,34 @@ class Ratkoja:
         "Hakee nykyisen peli tilanteen ja tekee ensimmäisen noden"
         self.peli = lauta
 
-    def laske_arvo(self):  # , lauta, siirto):
+    def laske_arvo(self):
         "Laskee kentän arvon"
-        # Eri heurististen arvojen painot
         lauta = self.peli
 
-        laudan_arvo_paino = 0.0
-        tyhjat_paino = 0.2
-        mono_paino = 0.1
-        kulma_pit_paino = 1.0
-        viereiset_ruudut_paino = 0.5
-        paras_mahd_paino = 0.0
+        tyhjat_paino = 4.0
+        mono_paino = 1.0
+        kulma_pit_paino = 10.0
+        viereiset_ruudut_paino = 0.0
 
-        laudan_arvo = 0  # self.laske_laudan_arvo(lauta)
         tyhjat = self.laske_tyhjat(lauta)
-        monotoonisuus = 0  # self.laske_mono(siirto, lauta)
+        monotoonisuus = self.laske_mono(lauta)
+        havio = self.onko_loppu(lauta)
         kulma_pit = self.laske_kulma_arvo(lauta)
-        viereiset = self.laske_vieresiet_ruudut(lauta)
-        paras_mahd = 0  # self.paras_mahd(lauta)
+        viereiset = 0  # self.laske_vieresiet_ruudut(lauta)
 
         return (
-            (laudan_arvo * laudan_arvo_paino)
-            + (tyhjat * tyhjat_paino)
+            (tyhjat * tyhjat_paino)
             + (monotoonisuus * mono_paino)
             + (kulma_pit * kulma_pit_paino)
             + (viereiset * viereiset_ruudut_paino)
-            + (paras_mahd * paras_mahd_paino)
+            - (havio)
         )
 
-    def paras_mahd(self, lauta):
-        "Paras mahdollinen jono ruutuja"
-        """[[65536,32768,16384,8192]
-            [512,1024,2048,4096]
-            [256,128,64,32]
-            [2,4,8,16]]"""
-        arvot = []
+    def onko_loppu(self, lauta):
+        "Katsoo onko peli loppu"
         arvo = 0
-        for rivi in lauta:
-            for i in rivi:
-                arvot.append(i)
-        arvot.sort(reverse=True)
-        if arvot[0] == lauta[0][0] and arvot[0] != 0:
-            arvo += 1
-        if arvot[1] == lauta[0][1] and arvot[1] != 0:
-            arvo += 1
-        if arvot[2] == lauta[0][2] and arvot[2] != 0:
-            arvo += 1
-        if arvot[3] == lauta[0][3] and arvot[3] != 0:
-            arvo += 1
-        if arvot[4] == lauta[1][3] and arvot[4] != 0:
-            arvo += 1
-        if arvot[5] == lauta[1][2] and arvot[5] != 0:
-            arvo += 1
-        if arvot[6] == lauta[1][1] and arvot[6] != 0:
-            arvo += 1
-        if arvot[7] == lauta[1][0] and arvot[7] != 0:
-            arvo += 1
-        if arvot[8] == lauta[2][0] and arvot[8] != 0:
-            arvo += 1
-        if arvot[9] == lauta[2][1] and arvot[9] != 0:
-            arvo += 1
-        if arvot[10] == lauta[2][2] and arvot[10] != 0:
-            arvo += 1
-        if arvot[11] == lauta[2][3] and arvot[11] != 0:
-            arvo += 1
-        if arvot[12] == lauta[3][3] and arvot[12] != 0:
-            arvo += 1
-        if arvot[13] == lauta[3][2] and arvot[13] != 0:
-            arvo += 1
-        if arvot[14] == lauta[3][1] and arvot[14] != 0:
-            arvo += 1
-        if arvot[15] == lauta[3][0] and arvot[15] != 0:
-            arvo += 1
+        if logiikka.hae_nykyinen_tila(lauta) == "Hävisit pelin!":
+            arvo = 20000
         return arvo
 
     def laske_vieresiet_ruudut(self, lauta):
@@ -110,24 +69,18 @@ class Ratkoja:
                     korkein_arvo_paikka = (rivi, sarake)
         # Laskee manhattan pituudet nurkkiin (jos arvo on nurkassa muutetaan arvo 1 koska muuten jaetaan nollalla)
         pituudet_kulmaan = [
-            abs(korkein_arvo_paikka[0] - kulma[0])
-            + abs(korkein_arvo_paikka[1] - kulma[1])
-            if abs(korkein_arvo_paikka[0] - kulma[0])
-            + abs(korkein_arvo_paikka[1] - kulma[1])
-            != 0
-            else 1
+            (
+                abs(korkein_arvo_paikka[0] - kulma[0])
+                + abs(korkein_arvo_paikka[1] - kulma[1])
+                if abs(korkein_arvo_paikka[0] - kulma[0])
+                + abs(korkein_arvo_paikka[1] - kulma[1])
+                != 0
+                else 1
+            )
             for kulma in kulmat
         ]
         # Ottaa lyhimmän arvon ja palauttaa sen käänteisluvun
-        return 1 / min(pituudet_kulmaan)
-
-    def laske_laudan_arvo(self, lauta):
-        "Laskee laudan arvon vain sen mukaan kuinka suuret arvot ovat ruudulla"
-        arvo = 0
-        for y in range(len(lauta)):
-            for x in range(len(lauta[0])):
-                arvo += lauta[y][x]
-        return arvo
+        return (1 / min(pituudet_kulmaan)) * (korkein_arvo / 10)
 
     def laske_tyhjat(self, lauta):
         "laskee tyhjien ruutujen määrän"
@@ -139,30 +92,19 @@ class Ratkoja:
 
         return tyhjat
 
-    def laske_mono(self, siirto, lauta):
+    def laske_mono(self, lauta):
         "laskee monotoonisuudelle arvon"
-        if siirto == "ylos":
-            ruudut = [(0, 0), (0, 1), (0, 2), (0, 3)]
-        elif siirto == "alas":
-            ruudut = [(3, 0), (3, 1), (3, 2), (3, 3)]
-        elif siirto == "vasen":
-            ruudut = [(0, 0), (1, 0), (2, 0), (3, 0)]
-        elif siirto == "oikea":
-            ruudut = [(0, 3), (1, 3), (2, 3), (3, 3)]
-        arvo = 0
-        for rivi, sarake in ruudut:
-            for i in range(1, 4):
-                if sarake + i < 4:
-                    nykyinen = lauta[rivi][sarake + i - 1]
-                    seuraava = lauta[rivi][sarake + i]
-                    while seuraava == 0 and i + 1 < 4:
-                        i += 1
-                        if sarake + i < 4:
-                            seuraava = lauta[rivi][sarake + i]
-                        else:
-                            break
+        mono_vasen = 0
+        mono_ylos = 0
 
-                    if nykyinen <= seuraava:
-                        arvo += 1
+        for i in range(4):
+            for j in range(3):
+                # Tarkista vaakasuorat rivit
+                mono_vasen += lauta[i][j] - lauta[i][j + 1]
+
+                # Tarkista sarakkeet
+                mono_ylos += lauta[j][i] - lauta[j + 1][i]
+
+        arvo = mono_vasen + mono_ylos
 
         return arvo

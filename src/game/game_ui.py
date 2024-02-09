@@ -49,6 +49,9 @@ class UI:
             "512",
             "1024",
             "2048",
+            "4096",
+            "8192",
+            "16384",
         ]:
             self.arvot.append(pygame.image.load(f"./Dokumentaatio/Kuvat/{arvo}.png"))
 
@@ -149,18 +152,6 @@ class UI:
                     (x * self.skaala, y * self.skaala + teksti.get_height()),
                 )
 
-        if logiikka.hae_nykyinen_tila(self.jatka) == "Sinä voitit!":
-            self.AI = False
-            teksti = self.fontti.render("Sinä voitit!", True, (0, 0, 0))
-            teksti_x = self.skaala * self.leveys / 2 - teksti.get_width() / 2
-            teksti_y = self.skaala * self.korkeus / 2 - teksti.get_height() / 2
-            pygame.draw.rect(
-                self.naytto,
-                (255, 255, 255),
-                (teksti_x, teksti_y, teksti.get_width(), teksti.get_height()),
-            )
-            self.naytto.blit(teksti, (teksti_x, teksti_y))
-
         if logiikka.hae_nykyinen_tila() == "Hävisit pelin!":
             self.AI = False
             teksti = self.fontti.render("Hävisit pelin!", True, (0, 0, 0))
@@ -178,7 +169,6 @@ class UI:
         "Pyröittää tekoälyä"
         while self.AI:
             siirto = hae_siirto(Node(self.peli))  # hakee seuraavan siirron
-
             muuttunut = False
 
             if siirto == "vasen":

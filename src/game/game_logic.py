@@ -23,35 +23,29 @@ class Logic:
         else:
             self.peli_lauta[rivi][sarake] = 2
 
-    def hae_nykyinen_tila(self, jatko=False, lauta=None):
+    def hae_nykyinen_tila(self, lauta=None):
         "Tarkistaa olemmeko voittaneet/hävinneet vai jatkuuko peli vielä."
         peli = self.peli_lauta
 
         if lauta:
             peli = lauta
 
-        if not jatko:  # Tarkistaa jatkuuko peli vai ei jos 2048 on saavutettu
-            for i in range(4):  # Jos jostain löytyy 2048 olemme voittaneet
-                for j in range(4):
-                    if peli[i][j] == 2048:
-                        return "Sinä voitit!"
-
-            for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
-                for j in range(4):
-                    if peli[i][j] == 0:
-                        return "ei"
-
-            # Jos kaikki kohdat ovat täynnä mutta pystymme yhdistämään arvoja peli ei ole vielä ohi
-            for i in range(3):
-                for j in range(3):
-                    if peli[i][j] == peli[i + 1][j] or peli[i][j] == peli[i][j + 1]:
-                        return "ei"
-
-            for j in range(3):
-                if peli[3][j] == peli[3][j + 1] or peli[j][3] == peli[j + 1][3]:
+        for i in range(4):  # Jos on tyhjää peli on vielä käynnissä
+            for j in range(4):
+                if peli[i][j] == 0:
                     return "ei"
 
-            return "Hävisit pelin!"
+        # Jos kaikki kohdat ovat täynnä mutta pystymme yhdistämään arvoja peli ei ole vielä ohi
+        for i in range(3):
+            for j in range(3):
+                if peli[i][j] == peli[i + 1][j] or peli[i][j] == peli[i][j + 1]:
+                    return "ei"
+
+        for j in range(3):
+            if peli[3][j] == peli[3][j + 1] or peli[j][3] == peli[j + 1][3]:
+                return "ei"
+
+        return "Hävisit pelin!"
 
     def tiivista(self, lauta):
         """Siirtää kaiken vasempaan reunaan"""

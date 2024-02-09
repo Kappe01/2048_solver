@@ -28,12 +28,6 @@ class TestLogic(unittest.TestCase):
 
         self.assertEqual(arvot, 3)
 
-    def test_hae_nykyinen_tila_voitto(self):
-        lauta = [[0, 0, 0, 0], [2048, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-        tulos = Logic.hae_nykyinen_tila(self.start, lauta=lauta)
-
-        self.assertEqual(tulos, "Sinä voitit!")
-
     def test_hae_nykyinen_tila_havio(self):
         lauta = [[2, 4, 2, 4], [4, 2, 4, 2], [2, 4, 2, 4], [4, 2, 4, 2]]
         tulos = Logic.hae_nykyinen_tila(self.start, lauta=lauta)

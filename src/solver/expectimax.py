@@ -8,9 +8,9 @@ class Node:
         self.lauta = lauta
 
     def on_terminal(self):
-        tulos = logiikka.hae_nykyinen_tila(False, self.lauta)
+        tulos = logiikka.hae_nykyinen_tila(self.lauta)
 
-        if tulos == "Hävisit pelin!" or tulos == "Sinä voitit!":
+        if tulos == "Hävisit pelin!":
             return True
         return False
 
@@ -58,7 +58,8 @@ def expectimax(node: Node, syvyys: int, pelaajan_vuoro: bool):
 
     if pelaajan_vuoro:
         alpha = -math.inf
-        for lapsi, siirto in node.hae_lapset():
+        lapset = node.hae_lapset()
+        for lapsi, siirto in lapset:
             alpha = max(alpha, expectimax(lapsi, syvyys - 1, False))
 
     else:
@@ -73,6 +74,7 @@ def hae_siirto(alku_node: Node):
     alpha = -math.inf
     syvyys = 4
     tyhjat = 0
+    paras_siirto = None
     for y in range(4):
         for x in range(4):
             if alku_node.lauta[y][x] == 0:
@@ -81,8 +83,10 @@ def hae_siirto(alku_node: Node):
         syvyys = 5
     if tyhjat < 4:
         syvyys = 6
-    for lapsi, siirto in alku_node.hae_lapset():
+    lapset = alku_node.hae_lapset()
+    for lapsi, siirto in lapset:
         new_alpha = expectimax(lapsi, syvyys, False)
+        print(new_alpha, alpha)
         if new_alpha > alpha:
             alpha = new_alpha
             paras_siirto = siirto
