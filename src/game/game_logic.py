@@ -67,7 +67,7 @@ class Logic:
 
         return muuttunut, lauta
 
-    def yhdista(self, lauta):
+    def yhdista(self, lauta, tulos):
         """Jos vierekkäisillä ruuduilla on sama arvo yhdistää se ne yhdeksi"""
         muuttunut = False
 
@@ -75,11 +75,12 @@ class Logic:
             for j in range(3):
                 if lauta[i][j] == lauta[i][j + 1] and lauta[i][j] != 0:
                     lauta[i][j] = lauta[i][j] * 2
+                    tulos += lauta[i][j]
                     lauta[i][j + 1] = 0
 
                     muuttunut = True
 
-        return muuttunut, lauta
+        return muuttunut, lauta, tulos
 
     def kaanna(self, lauta):
         "Kääntää laudan ylösalaisin vaakatasossa"
@@ -99,7 +100,7 @@ class Logic:
                 uus_lauta[i].append(lauta[j][i])
         return uus_lauta
 
-    def ylos(self, lauta=[]):
+    def ylos(self, tulos=0, lauta=[]):
         "Siirtää kaiken ylös"
         peli = self.peli_lauta
         if len(lauta) > 1:
@@ -107,16 +108,16 @@ class Logic:
 
         peli = self.vaihda(peli)
 
-        muuttunut, peli = self.vasen(peli)
+        muuttunut, peli, tulos = self.vasen(tulos, peli)
 
         peli = self.vaihda(peli)
 
         if not lauta:
             self.peli_lauta = peli
 
-        return muuttunut, peli
+        return muuttunut, peli, tulos
 
-    def alas(self, lauta=[]):
+    def alas(self, tulos=0, lauta=[]):
         "Siirtää kaiken alas"
         peli = self.peli_lauta
 
@@ -125,16 +126,16 @@ class Logic:
 
         peli = self.vaihda(peli)
 
-        muuttunut, peli = self.oikea(peli)
+        muuttunut, peli, tulos = self.oikea(tulos, peli)
 
         peli = self.vaihda(peli)
 
         if not lauta:
             self.peli_lauta = peli
 
-        return muuttunut, peli
+        return muuttunut, peli, tulos
 
-    def vasen(self, lauta=[]):
+    def vasen(self, tulos=0, lauta=[]):
         "Siirtää kaiken vasemmalle"
         peli = self.peli_lauta
 
@@ -143,7 +144,7 @@ class Logic:
 
         muuttunut1, peli = self.tiivista(peli)
 
-        muuttunut2, peli = self.yhdista(peli)
+        muuttunut2, peli, tulos = self.yhdista(peli, tulos)
 
         muuttunut = muuttunut1 or muuttunut2
 
@@ -152,9 +153,9 @@ class Logic:
         if not lauta:
             self.peli_lauta = peli
 
-        return muuttunut, peli
+        return muuttunut, peli, tulos
 
-    def oikea(self, lauta=[]):
+    def oikea(self, tulos=0, lauta=[]):
         "Siirtää kaiken oikealla"
         peli = self.peli_lauta
         if len(lauta) > 1:
@@ -162,14 +163,14 @@ class Logic:
 
         peli = self.kaanna(peli)
 
-        muuttunut, peli = self.vasen(peli)
+        muuttunut, peli, tulos = self.vasen(tulos, peli)
 
         peli = self.kaanna(peli)
 
         if not lauta:
             self.peli_lauta = peli
 
-        return muuttunut, peli
+        return muuttunut, peli, tulos
 
     def lauta(self):
         "Palauttaa laudan"

@@ -75,19 +75,19 @@ class UI:
                     not self.AI
                 ):  # Jos ohjelmaa suoritetaan AIn kanssa ei voi siirtää itse ruutua
                     if tapahtuma.key == pygame.K_LEFT:
-                        muuttunut, peli = logiikka.vasen()
+                        muuttunut, peli, self.tulos = logiikka.vasen(self.tulos)
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_RIGHT:
-                        muuttunut, peli = logiikka.oikea()
+                        muuttunut, peli, self.tulos = logiikka.oikea(self.tulos)
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_UP:
-                        muuttunut, peli = logiikka.ylos()
+                        muuttunut, peli, self.tulos = logiikka.ylos(self.tulos)
                         if muuttunut:
                             logiikka.lisaa_arvo()
                     if tapahtuma.key == pygame.K_DOWN:
-                        muuttunut, peli = logiikka.alas()
+                        muuttunut, peli, self.tulos = logiikka.alas(self.tulos)
                         if muuttunut:
                             logiikka.lisaa_arvo()
 
@@ -108,16 +108,8 @@ class UI:
 
         self.peli = logiikka.lauta()
 
-    def laske_pelin_tulos(self):
-        """Laskee pelin tuloksen"""
-        self.tulos = 0
-        for i in range(4):
-            for j in range(4):
-                self.tulos += self.peli[i][j]
-
     def paivita(self):
         "Päivittää näytön"
-        self.laske_pelin_tulos()
 
         self.naytto.fill((176, 224, 230))
         # Laittaa ohjeet näytön alareunaan
@@ -172,13 +164,13 @@ class UI:
             muuttunut = False
 
             if siirto == "vasen":
-                muuttunut, peli = logiikka.vasen()
+                muuttunut, peli, self.tulos = logiikka.vasen(self.tulos)
             elif siirto == "oikea":
-                muuttunut, peli = logiikka.oikea()
+                muuttunut, peli, self.tulos = logiikka.oikea(self.tulos)
             elif siirto == "alas":
-                muuttunut, peli = logiikka.alas()
+                muuttunut, peli, self.tulos = logiikka.alas(self.tulos)
             elif siirto == "ylos":
-                muuttunut, peli = logiikka.ylos()
+                muuttunut, peli, self.tulos = logiikka.ylos(self.tulos)
 
             if muuttunut:
                 logiikka.lisaa_arvo()
